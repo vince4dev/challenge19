@@ -1,44 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | E-commerce product page</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 0.6875rem; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
-</head>
-<body>
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
 
-  Collections
-  Men
-  Women
-  About
-  Contact
+    <!-- Javascript -->
+    <script src="./assets/js/script.js" defer></script>
 
-  Sneaker Company
+    <title>Frontend Mentor | E-commerce product page</title>
+  </head>
 
-  Fall Limited Edition Sneakers
+  <body>
+    <!--=== OVERLAY ===-->
+    <div id="overlay" class="overlay"></div>
 
-  These low-profile sneakers are your perfect casual wear companion. Featuring a 
-  durable rubber outer sole, they’ll withstand everything the weather can offer.
+    <!--=== HEADER ===-->
+    <header class="container">
+      <!--=== NAVBAR ===-->
+      <nav class="nav">
+        <div class="nav__wr">
+          <div class="u-flex-aic u-gap-16">
+            <!-- Toggle Button -->
+            <button id="nav-toggle" class="nav__toggle">
+              <img src="./assets/images/icon-menu.svg" alt="Icon Menu" />
+            </button>
 
-  $125.00
-  50%
-  $250.00
+            <!-- Logo -->
+            <a href="#" class="nav__logo">
+              <img src="./assets/images/logo.svg" alt="Sneakers logo" />
+            </a>
+          </div>
 
-  0
-  Add to cart
-  
-  <footer class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </footer>
-</body>
+          <!-- Menu -->
+          <div id="nav-menu" class="nav__menu">
+            <!-- Close Button -->
+            <button id="nav-close" class="nav__close">
+              <svg
+                class="icon__close"
+                width="14"
+                height="15"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m11.596.782 2.122 2.122L9.12 7.499l4.597 4.597-2.122 2.122L7 9.62l-4.595 4.597-2.122-2.122L4.878 7.5.282 2.904 2.404.782l4.595 4.596L11.596.782Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+
+            <ul role="list" class="nav__list">
+              <li class="nav__item"><a href="#collections">Collections</a></li>
+              <li class="nav__item"><a href="#men">Men</a></li>
+              <li class="nav__item"><a href="#women">Women</a></li>
+              <li class="nav__item"><a href="#about">About</a></li>
+              <li class="nav__item"><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="nav__profil u-flex-aic u-gap-24">
+          <!-- Panier -->
+          <a href="#" class="nav__panier"
+            ><img src="./assets/images/icon-cart.svg" alt="Icon cart"
+          /></a>
+
+          <!-- nav__photo -->
+          <img
+            class="nav__avatar"
+            src="./assets/images/image-avatar.png"
+            alt="avatar"
+          />
+        </div>
+      </nav>
+    </header>
+
+    <!--=== MAIN ===-->
+    <main class="product__wrapper">
+      <!-- Product Images -->
+      <div class="gallery">
+        <!-- Images -->
+        <div id="gallery-img" class="gallery__img"></div>
+
+        <!-- Thumbnails -->
+        <div id="gallery-thumbnail" class="gallery__thumbnail"></div>
+
+        <!-- Button Prev / Next -->
+        <div class="gallery__controls">
+          <button id="btn-prev" class="btn__nav">
+            <svg
+              class="icon__prev"
+              width="12"
+              height="18"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 1 3 9l8 8"
+                stroke="currentColor"
+                stroke-width="4"
+                fill="none"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <button id="btn-next" class="btn__nav">
+            <svg
+              class="icon__next"
+              width="13"
+              height="18"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m2 1 8 8-8 8"
+                stroke="currentColor"
+                stroke-width="4"
+                fill="none"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="container product">
+        <!-- Product Info -->
+        <div class="product__info">
+          <div class="product__title-content">
+            <span class="product__company">Sneaker Company</span>
+            <h1 class="product__title">Fall Limited Edition Sneakers</h1>
+          </div>
+
+          <p class="product__description">
+            These low-profile sneakers are your perfect casual wear companion.
+            Featuring a durable rubber outer sole, they’ll withstand everything
+            the weather can offer.
+          </p>
+        </div>
+
+        <!-- Product Price -->
+        <div class="product__price-wrapper">
+          <div class="product__price-content">
+            <p class="product__price">$125.00</p>
+            <span class="product__promo">50%</span>
+          </div>
+          <p class="product__old-price"><s>$250.00</s></p>
+        </div>
+
+        <div class="product__quantity-wrapper">
+          <!-- Product Quantity -->
+          <div class="product__quantity-content">
+            <button id="btn-minus">
+              <img
+                class="icon__minus"
+                src="./assets/images/icon-minus.svg"
+                alt=""
+              />
+            </button>
+            <span class="product__quantity">0</span>
+            <button id="btn-plus">
+              <img
+                class="icon__plus"
+                src="./assets/images/icon-plus.svg"
+                alt=""
+              />
+            </button>
+          </div>
+
+          <!-- Button -->
+          <button class="product__btn-add">
+            <img
+              class="icon__cart"
+              src="./assets/images/icon-cart.svg"
+              alt=""
+            />
+            <span>Add to cart</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
