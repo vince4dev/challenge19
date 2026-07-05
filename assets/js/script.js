@@ -1,244 +1,284 @@
 /* ==================================================================
-  DOM
-================================================================== */
-const overlay = document.getElementById("overlay");
-const galleryImg = document.getElementById("gallery-img");
-const galleryThumbs = document.getElementById("gallery-thumbnail");
-const prevBtn = document.getElementById("btn-prev");
-const nextBtn = document.getElementById("btn-next");
-const navMenu = document.getElementById("nav-menu");
-const navToggle = document.getElementById("nav-toggle");
-const navClose = document.getElementById("nav-close");
-const body = document.body;
-const btnMinus = document.getElementById("btn-minus");
-const btnPlus = document.getElementById("btn-plus");
-const qtyEl = document.querySelector(".product__quantity");
-// const productImg = document.querySelectorAll("gallery__img img");
+    CONFIG & STATE
+    ================================================================== */
+const CONFIG = {
+  images: [
+    "./assets/images/image-product-1.jpg",
+    "./assets/images/image-product-2.jpg",
+    "./assets/images/image-product-3.jpg",
+    "./assets/images/image-product-4.jpg",
+  ],
+  thumbnails: [
+    "./assets/images/image-product-1-thumbnail.jpg",
+    "./assets/images/image-product-2-thumbnail.jpg",
+    "./assets/images/image-product-3-thumbnail.jpg",
+    "./assets/images/image-product-4-thumbnail.jpg",
+  ],
+};
+
+const state = {
+  quantity: 0,
+  currentIndex: 0,
+  totalItemsInCart: 0,
+};
 
 /* ==================================================================
-  Compteur
-================================================================== */
-let quantity = parseInt(qtyEl.textContent, 10);
+    DOM ELEMENTS
+    ================================================================== */
+const DOM = {
+  // Gallery
+  galleryImg: document.getElementById("product-img"),
+  galleryThumbs: document.getElementById("gallery-thumbnail"),
+  galleryContainer: document.getElementById("gallery-img"),
+  btnPrev: document.getElementById("btn-prev"),
+  btnNext: document.getElementById("btn-next"),
 
-function updateQuantity() {
-  qtyEl.textContent = quantity;
+  // Modal
+  previewOverlay: document.getElementById("preview-overlay"),
+  previewImg: document.getElementById("preview-image"),
+  previewThumbs: document.getElementById("preview-thumbnails"),
+  previewClose: document.getElementById("preview-close"),
+  previewPrev: document.getElementById("preview-prev"),
+  previewNext: document.getElementById("preview-next"),
+
+  // Menu
+  navMenu: document.getElementById("nav-menu"),
+  navToggle: document.getElementById("nav-toggle"),
+  navClose: document.getElementById("nav-close"),
+
+  // Cart
+  cartTrigger: document.getElementById("cart-trigger"),
+  cartPopover: document.getElementById("cart-popover"),
+  cartBody: document.getElementById("cart-popover-body"),
+  cartFooter: document.getElementById("cart-popover-footer"),
+  cartEmptyMsg: document.getElementById("cart-empty-msg"),
+  cartBadge: document.querySelector(".cart__badge"),
+  cartRemoveBtn: document.getElementById("cart-item-remove"),
+
+  // Product
+  qtyEl: document.querySelector(".product__quantity"),
+  btnMinus: document.getElementById("btn-minus"),
+  btnPlus: document.getElementById("btn-plus"),
+  addBtn: document.querySelector(".product__btn-add"),
+  body: document.body,
+};
+
+/* ==================================================================
+    QUANTITY LOGIC
+    ================================================================== */
+function updateQuantityUI() {
+  DOM.qtyEl.textContent = state.quantity;
 }
 
-btnMinus.addEventListener("click", () => {
-  if (quantity > 0) {
-    quantity -= 1;
-    updateQuantity();
+DOM.btnMinus.addEventListener("click", () => {
+  if (state.quantity > 0) {
+    state.quantity--;
+    updateQuantityUI();
   }
 });
 
-btnPlus.addEventListener("click", () => {
-  quantity += 1;
-  updateQuantity();
+DOM.btnPlus.addEventListener("click", () => {
+  state.quantity++;
+  updateQuantityUI();
 });
 
-updateQuantity();
-
 /* ==================================================================
-  Images Gallery
-================================================================== */
-const images = [
-  "./assets/images/image-product-1.jpg",
-  "./assets/images/image-product-2.jpg",
-  "./assets/images/image-product-3.jpg",
-  "./assets/images/image-product-4.jpg",
-];
+    GALLERY & MODAL LOGIC
+    ================================================================== */
+function updateMainImage() {
+  DOM.galleryImg.src = CONFIG.images[state.currentIndex];
+  DOM.galleryImg.alt = `Product image ${state.currentIndex + 1}`;
 
-const thumbnails = [
-  "./assets/images/image-product-1-thumbnail.jpg",
-  "./assets/images/image-product-2-thumbnail.jpg",
-  "./assets/images/image-product-3-thumbnail.jpg",
-  "./assets/images/image-product-4-thumbnail.jpg",
-];
-
-let currentIndex = 0;
-
-function showImage(index) {
-  galleryImg.innerHTML = `<img id="product-img" class="product__img" src="${images[index]}" alt="Product image ${index + 1}"/>`;
+  // Update active thumbnail class
+  DOM.galleryThumbs.querySelectorAll("img").forEach((img, i) => {
+    img.classList.toggle("selected", i === state.currentIndex);
+  });
 }
 
-function updateSelectedThumbnail(index) {
-  // remove the class from all thumbnails
-  galleryThumbs
-    .querySelectorAll("img")
-    .forEach((img) => img.classList.remove("selected"));
-
-  // Add the class to the corresponding thumbnail.
-  const selectedImg = galleryThumbs.querySelector(`img[data-index="${index}"]`);
-  if (selectedImg) selectedImg.classList.add("selected");
-}
-
-function showThumbnail() {
-  galleryThumbs.innerHTML = thumbnails
+function renderGallery() {
+  DOM.galleryThumbs.innerHTML = CONFIG.thumbnails
     .map(
       (img, i) =>
-        `<div class="thumb"><img src="${img}" alt="Product thumbnail ${i + 1}" data-index="${i}"></div>`,
+        `<div class="thumb"><img src="${img}" alt="Thumb ${i + 1}" data-index="${i}"></div>`,
     )
     .join("");
 
-  galleryThumbs.querySelectorAll("img").forEach((img) => {
+  DOM.galleryThumbs.querySelectorAll("img").forEach((img) => {
     img.addEventListener("click", () => {
-      const idx = parseInt(img.dataset.index, 10);
-      currentIndex = idx;
-      showImage(currentIndex);
-
-      updateSelectedThumbnail(idx);
+      state.currentIndex = parseInt(img.dataset.index);
+      updateMainImage();
     });
   });
 }
 
-prevBtn.addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % images.length;
-  showImage(currentIndex);
-});
-
-nextBtn.addEventListener("click", () => {
-  currentIndex = (currentIndex - 1 + images.length) % images.length;
-  showImage(currentIndex);
-});
-
-showImage(currentIndex);
-showThumbnail();
-updateSelectedThumbnail(currentIndex);
-
-/* ==================================================================
-  Open/Close Menu
-================================================================== */
-navToggle.addEventListener("click", openMenu);
-navClose.addEventListener("click", closeMenu);
-
-/* Open Menu */
-function openMenu() {
-  navMenu.classList.add("show__menu");
-  body.classList.add("menu__open");
-  navToggle.setAttribute("aria-expanded", "true");
+// Modal Logic
+function openModal() {
+  DOM.previewOverlay.classList.add("active");
+  DOM.body.style.overflow = "hidden";
+  updatePreviewUI();
 }
 
-/* Close Menu */
-function closeMenu() {
-  navMenu.classList.remove("show__menu");
-  body.classList.remove("menu__open");
-  navToggle.setAttribute("aria-expanded", "false");
+function closeModal() {
+  DOM.previewOverlay.classList.remove("active");
+  DOM.body.style.overflow = "";
 }
 
-/* ==================================================================
-  Close Overlay
-================================================================== */
-overlay.addEventListener("click", closeMenu);
+function updatePreviewUI() {
+  DOM.previewImg.src = CONFIG.images[state.currentIndex];
 
-/* ==================================================================
-  Preview Modal
-================================================================== */
-const prevOverlay = document.getElementById("preview-overlay");
-const previewImg = document.getElementById("preview-image");
-const thumbContainer = document.getElementById("preview-thumbnails");
-const closeBtn = document.getElementById("preview-close");
-const prevModalBtn = document.getElementById("preview-prev");
-const nextModalBtn = document.getElementById("preview-next");
-
-const galleryImgContainer = document.getElementById("gallery-img");
-
-let thumgImages = [];
-
-galleryImgContainer.addEventListener("click", (e) => {
-  if (e.target.matches("#product-img")) {
-    openModal();
-  }
-});
-
-function initGallery() {
-  // Retrieval of all images from the existing gallery
-  const galleryThumbImgs = document.querySelectorAll(".gallery__thumbnail img");
-
-  if (galleryThumbImgs.length === 0) {
-    console.error(
-      "Aucune image trouvée dans la galerie. Vérifiez la classe CSS.",
-    );
-    return;
-  }
-  // We store the image links in an array.
-  thumgImages = Array.from(galleryThumbImgs).map((img) => img.src);
-
-  thumbContainer.innerHTML = "";
-  thumgImages.forEach((src, index) => {
-    const thumb = document.createElement("img");
-    thumb.src = src;
-    thumb.classList.add("preview-thumb");
-    if (index === 0) thumb.classList.add("active");
-
-    thumb.addEventListener("click", () => {
-      currentIndex = index;
-      updatePreview();
-    });
-    thumbContainer.appendChild(thumb);
-  });
-}
-
-function updatePreview() {
-  previewImg.src = images[currentIndex];
-
-  // Update to the orange border on the active thumbnail
-  document.querySelectorAll(".preview-thumb").forEach((thumb, i) => {
-    thumb.classList.toggle("active", i === currentIndex);
+  // Update modal thumbnails
+  const thumbs = DOM.previewThumbs.querySelectorAll(".preview-thumb");
+  thumbs.forEach((thumb, i) => {
+    thumb.classList.toggle("active", i === state.currentIndex);
   });
 
-  // Automatic scrolling of the active thumbnail to make it visible
-  const activeThumb = thumbContainer.querySelector(".active");
-  if (activeThumb) {
+  const activeThumb = DOM.previewThumbs.querySelector(".active");
+  if (activeThumb)
     activeThumb.scrollIntoView({
       behavior: "smooth",
       inline: "center",
       block: "nearest",
     });
+}
+
+function initModalThumbs() {
+  DOM.previewThumbs.innerHTML = CONFIG.images
+    .map((src, i) => {
+      return `<img src="${src}" class="preview-thumb ${i === 0 ? "active" : ""}" data-index="${i}">`;
+    })
+    .join("");
+
+  DOM.previewThumbs.querySelectorAll("img").forEach((img) => {
+    img.addEventListener("click", () => {
+      state.currentIndex = parseInt(img.dataset.index);
+      updatePreviewUI();
+      updateMainImage(); // Sync with main gallery
+    });
+  });
+}
+
+// Image Activation (Click & Keyboard)
+function handleImageActivation(e) {
+  if (e.target.matches("#product-img")) {
+    if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+    if (e.type === "keydown") e.preventDefault();
+    openModal();
   }
 }
 
-// Opening and closing
-function openModal() {
-  prevOverlay.classList.add("active");
-  // Prevents background page scrolling.
-  document.body.style.overflow = "hidden";
-  initGallery();
-  updatePreview();
-}
-function closeModal() {
-  prevOverlay.classList.remove("active");
-  // Re-enables page scrolling.
-  document.body.style.overflow = "";
+/* ==================================================================
+    CART LOGIC
+    ================================================================== */
+function updateCartUI() {
+  const isEmpty = state.totalItemsInCart === 0;
+  DOM.cartBody.style.display = isEmpty ? "none" : "block";
+  DOM.cartFooter.style.display = isEmpty ? "none" : "block";
+  DOM.cartEmptyMsg.style.display = isEmpty ? "block" : "none";
+
+  if (DOM.cartBadge) {
+    DOM.cartBadge.textContent = state.totalItemsInCart;
+    DOM.cartBadge.style.opacity = isEmpty ? "0" : "1";
+  }
 }
 
-// Navigation Previous / Next
-function prevImage() {
-  currentIndex = (currentIndex - 1 + images.length) % images.length;
-  updatePreview();
-}
-function nextImage() {
-  currentIndex = (currentIndex + 1) % images.length;
-  updatePreview();
-}
-
-// --- EVENT LISTENERS ---
-closeBtn.addEventListener("click", closeModal);
-
-// Close when clicking the dark background
-prevOverlay.addEventListener("click", (e) => {
-  if (e.target === prevOverlay) closeModal();
+DOM.addBtn.addEventListener("click", () => {
+  if (state.quantity > 0) {
+    state.totalItemsInCart += state.quantity;
+    state.quantity = 0;
+    updateQuantityUI();
+    updateCartUI();
+  } else {
+    alert("Veuillez choisir au moins un article.");
+  }
 });
 
-prevModalBtn.addEventListener("click", prevImage);
-nextModalBtn.addEventListener("click", nextImage);
+DOM.cartTrigger.addEventListener("click", (e) => {
+  e.preventDefault();
+  DOM.cartPopover.classList.toggle("active");
+  updateCartUI();
+});
 
-// Keyboard navigation
+document.addEventListener("click", (e) => {
+  if (
+    !DOM.cartTrigger.contains(e.target) &&
+    !DOM.cartPopover.contains(e.target)
+  ) {
+    DOM.cartPopover.classList.remove("active");
+  }
+});
+
+DOM.cartRemoveBtn.addEventListener("click", () => {
+  state.totalItemsInCart = 0;
+  updateCartUI();
+});
+
+/* ==================================================================
+    MENU & GLOBAL EVENTS
+    ================================================================== */
+const toggleMenu = (isOpen) => {
+  DOM.navMenu.classList.toggle("show__menu", isOpen);
+  DOM.body.classList.toggle("menu__open", isOpen);
+  DOM.navToggle.setAttribute("aria-expanded", isOpen);
+};
+
+DOM.navToggle.addEventListener("click", () => toggleMenu(true));
+DOM.navClose.addEventListener("click", () => toggleMenu(false));
+
+// Gallery Navigation
+DOM.btnPrev.addEventListener("click", () => {
+  state.currentIndex = (state.currentIndex + 1) % CONFIG.images.length;
+  updateMainImage();
+});
+
+DOM.btnNext.addEventListener("click", () => {
+  state.currentIndex =
+    (state.currentIndex - 1 + CONFIG.images.length) % CONFIG.images.length;
+  updateMainImage();
+});
+
+DOM.previewPrev.addEventListener("click", () => {
+  state.currentIndex =
+    (state.currentIndex - 1 + CONFIG.images.length) % CONFIG.images.length;
+  updatePreviewUI();
+});
+
+DOM.previewNext.addEventListener("click", () => {
+  state.currentIndex = (state.currentIndex + 1) % CONFIG.images.length;
+  updatePreviewUI();
+});
+
+// General Listeners
+DOM.galleryContainer.addEventListener("click", handleImageActivation);
+DOM.galleryContainer.addEventListener("keydown", handleImageActivation);
+DOM.previewClose.addEventListener("click", closeModal);
+
+DOM.previewOverlay.addEventListener("click", (e) => {
+  if (e.target === DOM.previewOverlay) closeModal();
+});
+
 document.addEventListener("keydown", (e) => {
-  if (!prevOverlay.classList.contains("active")) return;
-
+  if (!DOM.previewOverlay.classList.contains("active")) return;
   if (e.key === "Escape") closeModal();
-  if (e.key === "ArrowLeft") prevImage();
-  if (e.key === "ArrowRight") nextImage();
+  if (e.key === "ArrowLeft") {
+    state.currentIndex =
+      (state.currentIndex - 1 + CONFIG.images.length) % CONFIG.images.length;
+    updatePreviewUI();
+  }
+  if (e.key === "ArrowRight") {
+    state.currentIndex = (state.currentIndex + 1) % CONFIG.images.length;
+    updatePreviewUI();
+  }
 });
 
-// initGallery();
+/* ==================================================================
+    INIT
+    ================================================================== */
+function init() {
+  state.quantity = parseInt(DOM.qtyEl.textContent, 10) || 0;
+  updateQuantityUI();
+  renderGallery();
+  initModalThumbs();
+  updateMainImage();
+}
+
+init();
