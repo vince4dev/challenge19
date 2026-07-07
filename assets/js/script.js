@@ -105,7 +105,7 @@ function renderGallery() {
 
   DOM.galleryThumbs.querySelectorAll("img").forEach((img) => {
     img.addEventListener("click", () => {
-      state.currentIndex = parseInt(img.dataset.index);
+      state.currentIndex = parseInt(img.dataset.index, 10);
       updateMainImage();
     });
   });
@@ -159,7 +159,6 @@ function initModalThumbs() {
 
 // Image Activation (Click & Keyboard)
 function handleImageActivation(e) {
-  console.log(e.target);
   if (e.target.matches("#product-img-btn")) {
     if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
     if (e.type === "keydown") e.preventDefault();
@@ -226,12 +225,12 @@ DOM.navToggle.addEventListener("click", () => toggleMenu(true));
 DOM.navClose.addEventListener("click", () => toggleMenu(false));
 
 // Gallery Navigation
-DOM.btnPrev.addEventListener("click", () => {
+DOM.btnNext.addEventListener("click", () => {
   state.currentIndex = (state.currentIndex + 1) % CONFIG.images.length;
   updateMainImage();
 });
 
-DOM.btnNext.addEventListener("click", () => {
+DOM.btnPrev.addEventListener("click", () => {
   state.currentIndex =
     (state.currentIndex - 1 + CONFIG.images.length) % CONFIG.images.length;
   updateMainImage();
