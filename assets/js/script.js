@@ -29,7 +29,7 @@ const DOM = {
   // Gallery
   galleryImg: document.getElementById("product-img"),
   galleryThumbs: document.getElementById("gallery-thumbnail"),
-  galleryContainer: document.getElementById("gallery-img"),
+  productImgBtn: document.getElementById("product-img-btn"),
   btnPrev: document.getElementById("btn-prev"),
   btnNext: document.getElementById("btn-next"),
 
@@ -159,11 +159,12 @@ function initModalThumbs() {
 
 // Image Activation (Click & Keyboard)
 function handleImageActivation(e) {
-  if (e.target.matches("#product-img")) {
+  console.log(e.target);
+  if (e.target.matches("#product-img-btn")) {
     if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
     if (e.type === "keydown") e.preventDefault();
-    openModal();
   }
+  openModal();
 }
 
 /* ==================================================================
@@ -248,8 +249,8 @@ DOM.previewNext.addEventListener("click", () => {
 });
 
 // General Listeners
-DOM.galleryContainer.addEventListener("click", handleImageActivation);
-DOM.galleryContainer.addEventListener("keydown", handleImageActivation);
+DOM.productImgBtn.addEventListener("click", handleImageActivation);
+DOM.productImgBtn.addEventListener("keydown", handleImageActivation);
 DOM.previewClose.addEventListener("click", closeModal);
 
 DOM.previewOverlay.addEventListener("click", (e) => {

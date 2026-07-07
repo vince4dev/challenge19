@@ -173,8 +173,8 @@ body.menu__open .overlay {
   background-color: var(--clr-white);
   width: 16rem;
   height: 100%;
-  transition: left 0.3s;
   left: -100%;
+  transition: left 0.3s ease;
   z-index: 1;
 
   padding: 1.5rem;
@@ -318,9 +318,7 @@ body.menu__open .overlay {
 .cart__item-remove svg:hover {
   color: var(--clr-grey-500);
 }
-.cart__item-remove svg:focus-visible {
-  /* outline: none; */
-}
+
 .cart__item-remove:focus-visible svg {
   color: var(--clr-grey-950);
   outline: none;
@@ -347,13 +345,11 @@ body.menu__open .overlay {
   background-color: var(--clr-orange-300);
 }
 .cart__empty-msg {
+  display: none;
   text-align: center;
   padding: 20px;
   font-weight: var(--fw-bold);
   margin: 20px 0;
-}
-.cart__empty-msg {
-  display: none;
 }
 
 /* *========================================
@@ -379,6 +375,9 @@ body.menu__open .overlay {
 }
 .gallery__thumbnail {
   display: none;
+}
+.product__img-btn {
+  cursor: auto;
 }
 
 /* Button Prev/Next */
@@ -647,9 +646,10 @@ body.menu__open .overlay {
     right: 0;
     width: auto;
   }
+
   .nav__list {
     flex-direction: row;
-    justify-content: flex-starts;
+    justify-content: flex-start;
     align-items: center;
     gap: 2rem;
   }
@@ -691,19 +691,19 @@ body.menu__open .overlay {
     gap: 2rem;
   }
 
-  .gallery__img {
-    border-radius: 15px;
-  }
-  .gallery__img img {
+  .product__img-btn,
+  .product__img-btn img {
     border-radius: 15px;
     cursor: pointer;
+  }
+  .product__img-btn {
     transition: box-shadow 0.2s ease;
   }
-
-  .gallery__img img:focus-visible {
+  .product__img-btn:focus-visible {
     outline: none;
     box-shadow: 0 0 20px 5px var(--clr-orange-500);
   }
+
   .gallery__thumbnail {
     height: auto;
     border-radius: 10px;
@@ -746,16 +746,11 @@ body.menu__open .overlay {
     align-content: center;
   }
 
-  .gallery__img-wrapper {
-    display: grid;
-    gap: 2rem;
-  }
-
   /* *========================================
       * PREVIEW MODAL *
   *======================================== */
   /* Dark background covering the entire screen */
-  .preview__overlay {
+  /* .preview__overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
@@ -765,7 +760,7 @@ body.menu__open .overlay {
     z-index: 9999;
     opacity: 0;
     transition: opacity 0.3s ease;
-  }
+  } */
 
   /* State when the modal is open */
   .preview__overlay.active {
@@ -796,9 +791,15 @@ body.menu__open .overlay {
   .preview__close {
     cursor: pointer;
     color: #fff;
+    transition: box-shadow 0.2s ease;
   }
+  .preview__close:focus-visible,
   .icon__prev-close:hover {
     color: var(--clr-orange-500);
+  }
+  .preview__close:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0px 3px var(--clr-orange-500);
   }
 
   /* Main Zone Image / Arrows */
@@ -839,11 +840,15 @@ body.menu__open .overlay {
     z-index: 10;
     color: var(--clr-grey-950);
   }
-
+  .preview__nav:focus-visible,
   .preview__nav:hover {
     color: var(--clr-orange-500);
     background: #f0f0f0;
     transform: translateY(-50%) scale(1.1);
+  }
+  .preview__nav:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0px 3px var(--clr-orange-500);
   }
 
   .preview__prev {

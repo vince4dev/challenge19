@@ -79,7 +79,12 @@
         <div class="nav__profil u-flex-aic u-gap-24">
           <!-- Cart -->
           <div class="cart__container">
-            <a href="#" class="nav__cart" id="cart-trigger">
+            <a
+              href="#"
+              class="nav__cart"
+              id="cart-trigger"
+              aria-label="View cart"
+            >
               <svg
                 width="22"
                 height="20"
@@ -95,7 +100,12 @@
             </a>
 
             <!-- Cart Popover -->
-            <div class="cart__popover" id="cart-popover">
+            <div
+              class="cart__popover"
+              id="cart-popover"
+              role="dialog"
+              aria-labelledby="cart-title"
+            >
               <!-- title -->
               <div class="cart__popover-header">
                 <h3>Cart</h3>
@@ -117,7 +127,11 @@
                       $125.00 x 3 <span>$375.00</span>
                     </p>
                   </div>
-                  <button class="cart__item-remove" id="cart-item-remove">
+                  <button
+                    class="cart__item-remove"
+                    id="cart-item-remove"
+                    aria-label="Remove the item from the cart"
+                  >
                     <svg
                       width="14"
                       height="16"
@@ -156,7 +170,7 @@
           <img
             class="nav__avatar"
             src="./assets/images/image-avatar.png"
-            alt="avatar"
+            alt="User profile photo"
           />
         </div>
       </nav>
@@ -167,17 +181,19 @@
       <!-- Product Images -->
       <div class="gallery">
         <!-- Images -->
-        <!-- <div id="gallery-img" class="gallery__img"></div> -->
-        <div id="gallery-img" class="gallery__img">
+        <button
+          id="product-img-btn"
+          class="product__img-btn"
+          aria-label="Enlarge product image"
+        >
           <img
             id="product-img"
             class="product__img"
             src="./assets/images/image-product-1.jpg"
             alt="Product image"
-            tabindex="0"
-            role="button"
           />
-        </div>
+        </button>
+        <!-- </div> -->
 
         <!-- Thumbnails -->
         <div id="gallery-thumbnail" class="gallery__thumbnail"></div>
@@ -246,7 +262,11 @@
         <div class="product__quantity-wrapper">
           <!-- Product Quantity -->
           <div class="product__quantity-content">
-            <button class="icon__minus" id="btn-minus">
+            <button
+              class="icon__minus"
+              id="btn-minus"
+              aria-label="Reduce the quantity"
+            >
               <svg
                 width="12"
                 height="4"
@@ -261,7 +281,11 @@
               </svg>
             </button>
             <span class="product__quantity">0</span>
-            <button class="icon__plus" id="btn-plus">
+            <button
+              class="icon__plus"
+              id="btn-plus"
+              aria-label="Increase the quantity"
+            >
               <svg
                 width="12"
                 height="12"
@@ -291,11 +315,21 @@
     </main>
 
     <!--=== Preview Modal ===-->
-    <div id="preview-overlay" class="preview__overlay">
+    <div
+      id="preview-overlay"
+      class="preview__overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="preview-title"
+    >
       <div class="preview-content">
         <!-- Close button -->
         <div class="preview__close-main">
-          <button class="preview__close" id="preview-close">
+          <button
+            class="preview__close"
+            id="preview-close"
+            aria-label="Close preview"
+          >
             <svg
               class="icon__prev-close"
               width="20"
@@ -314,7 +348,11 @@
           <!-- Product Preview Image -->
           <div class="preview-main">
             <!-- Left arrow -->
-            <button id="preview-prev" class="preview__nav preview__prev">
+            <button
+              id="preview-prev"
+              class="preview__nav preview__prev"
+              aria-label="Previous image"
+            >
               <svg
                 class="icon__prev"
                 width="12"
@@ -337,7 +375,11 @@
             />
 
             <!-- Right arrow -->
-            <button id="preview-next" class="preview__nav preview__next">
+            <button
+              id="preview-next"
+              class="preview__nav preview__next"
+              aria-label="Next image"
+            >
               <svg
                 class="icon__next"
                 width="13"
